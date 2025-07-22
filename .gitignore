@@ -1,0 +1,9 @@
+node_modules/
+venv/
+vosk-model-small-en-us-0.15/
+vosk-model-en-us-0.22-lgraph
+
+nircmd.exe
+
+
+
