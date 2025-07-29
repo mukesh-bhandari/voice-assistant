@@ -1,0 +1,376 @@
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        min-height: 100vh;
+        color: #f8fafc;
+        overflow-x: hidden;
+      }
+
+      .container {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh; 
+        padding: 2rem;
+      }
+
+      /* Background Effects */
+      .bg-effects {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .bg-blob {
+        position: absolute;
+        width: 20rem;
+        height: 20rem;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.15;
+        animation: pulse 6s ease-in-out infinite;
+      }
+
+      .bg-blob:nth-child(1) {
+        top: -10rem;
+        right: -10rem;
+        background: #64748b;
+        animation-delay: 0s;
+      }
+
+      .bg-blob:nth-child(2) {
+        bottom: -10rem;
+        left: -10rem;
+        background: #475569;
+        animation-delay: 3s;
+      }
+
+      .bg-blob:nth-child(3) {
+        top: 10rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #334155;
+        animation-delay: 6s;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .title {
+        font-size: 3.5rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        letter-spacing: -0.025em;
+        color: #f8fafc;
+      }
+
+      .title-voice {
+        background: linear-gradient(to right, #e2e8f0, #cbd5e1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 400;
+      }
+
+      .subtitle {
+        font-size: 1.125rem;
+        color: #94a3b8;
+        font-weight: 300;
+      }
+
+      /* Main Voice Interface */
+      .voice-interface {
+        position: relative;
+        margin-bottom: 3rem;
+      }
+
+      .listening-rings {
+        position: absolute;
+        inset: 0;
+        display: none;
+      }
+
+      .listening-rings.active {
+        display: block;
+      }
+
+      .ring {
+        position: absolute;
+        border: 2px solid;
+        border-radius: 50%;
+        animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      .ring:nth-child(1) {
+        inset: 0;
+        border-color: #64748b;
+        opacity: 0.3;
+      }
+
+      .ring:nth-child(2) {
+        inset: 0.75rem;
+        border-color: #475569;
+        opacity: 0.2;
+        animation-delay: 1s;
+      }
+
+      .ring:nth-child(3) {
+        inset: 1.5rem;
+        border-color: #334155;
+        opacity: 0.1;
+        animation-delay: 2s;
+      }
+
+      .mic-button {
+        position: relative;
+        width: 7rem;
+        height: 7rem;
+        background: linear-gradient(135deg, #475569, #334155);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 50%;
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mic-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 25px 50px -12px rgba(71, 85, 105, 0.3);
+        background: linear-gradient(135deg, #64748b, #475569);
+      }
+
+      .mic-button:active {
+        transform: scale(0.98);
+      }
+
+      .mic-button.listening {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        border-color: rgba(239, 68, 68, 0.3);
+      }
+
+      .mic-button.listening:hover {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+      }
+
+      .mic-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: #f8fafc;
+        transition: transform 0.3s ease;
+      }
+
+      .mic-button:hover .mic-icon {
+        transform: scale(1.1);
+      }
+
+      .pulse-effect {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #475569, #334155);
+        border-radius: 50%;
+        animation: pulse 3s ease-in-out infinite;
+        opacity: 0.2;
+      }
+
+      .status-text {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        color: #94a3b8;
+        font-weight: 400;
+      }
+
+      /* Transcript Area */
+      .transcript-container {
+        width: 100%;
+        max-width: 56rem;
+      }
+
+      .transcript-box {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(20px);
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .transcript-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .status-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #10b981;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+        animation: pulse 3s ease-in-out infinite;
+      }
+
+      .transcript-title {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #e2e8f0;
+      }
+
+      .transcript-content {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        min-height: 12rem;
+        max-height: 24rem;
+        overflow-y: auto;
+        border: 1px solid rgba(148, 163, 184, 0.05);
+      }
+
+      .transcript-placeholder {
+        color: #64748b;
+        font-style: italic;
+        text-align: center;
+        padding: 2rem 0;
+        font-size: 0.9rem;
+      }
+
+      .transcript-message {
+        margin-bottom: 1rem;
+      }
+
+      .transcript-timestamp {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+      }
+
+      .transcript-text {
+        color: #f1f5f9;
+        line-height: 1.5;
+      }
+
+      /* Quick Actions */
+      .quick-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+
+      .action-button {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(16px);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        color: #cbd5e1;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.875rem;
+        font-weight: 400;
+      }
+
+      .action-button:hover {
+        background: rgba(30, 41, 59, 0.8);
+        transform: translateY(-1px);
+        color: #f1f5f9;
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+
+      .action-icon {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+      }
+
+      /* Voice Visualizer */
+      .voice-visualizer {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        opacity: 0.6;
+      }
+
+      .visualizer-bar {
+        width: 0.25rem;
+        border-radius: 0.125rem;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .visualizer-bar:nth-child(1) { height: 1rem; background: #64748b; }
+      .visualizer-bar:nth-child(2) { height: 1.5rem; background: #475569; animation-delay: 0.1s; }
+      .visualizer-bar:nth-child(3) { height: 1.25rem; background: #334155; animation-delay: 0.2s; }
+      .visualizer-bar:nth-child(4) { height: 2rem; background: #64748b; animation-delay: 0.3s; }
+      .visualizer-bar:nth-child(5) { height: 0.75rem; background: #475569; animation-delay: 0.4s; }
+      .visualizer-bar:nth-child(6) { height: 1.75rem; background: #334155; animation-delay: 0.5s; }
+      .visualizer-bar:nth-child(7) { height: 1rem; background: #64748b; animation-delay: 0.6s; }
+
+      /* Animations */
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+      }
+
+      @keyframes ping {
+        75%, 100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .title {
+          font-size: 2.5rem;
+        }
+        
+        .mic-button {
+          width: 5.5rem;
+          height: 5.5rem;
+        }
+        
+        .mic-icon {
+          width: 2rem;
+          height: 2rem;
+        }
+        
+        .quick-actions {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        
+        .container {
+          padding: 1rem;
+        }
+      }
+
+      /* Subtle focus states for accessibility */
+      .mic-button:focus-visible {
+        outline: 2px solid #64748b;
+        outline-offset: 4px;
+      }
+
+      .action-button:focus-visible {
+        outline: 2px solid #64748b;
+        outline-offset: 2px;
+      }

@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
@@ -11,11 +10,155 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
-    <title>voice asistant</title>
+    <title>Voice Assistant</title>
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p id="transcript"></p>
-    <script src="renderer.js"></script>
+    <!-- Background Effects -->
+    <div class="bg-effects">
+      <div class="bg-blob"></div>
+      <div class="bg-blob"></div>
+      <div class="bg-blob"></div>
+    </div>
+
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1 class="title">
+          <span class="title-voice">Voice</span>
+          <span>Assistant</span>
+        </h1>
+        <p class="subtitle">Speak naturally, I'm listening</p>
+      </div>
+
+      <!-- Main Voice Interface -->
+      <div class="voice-interface">
+        <!-- Listening Animation Rings -->
+        <div id="listening-rings" class="listening-rings">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+
+        <!-- Main Microphone Button -->
+        <button id="mic-button" class="mic-button">
+          <!-- Microphone Icon -->
+          <svg class="mic-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+          </svg>
+
+          <!-- Pulse Effect -->
+          <div class="pulse-effect"></div>
+        </button>
+
+        <!-- Status Text -->
+        <div class="status-text">
+          <p id="status-text">Tap to start listening</p>
+        </div>
+      </div>
+
+      <!-- Transcript Area -->
+      <div class="transcript-container">
+        <div class="transcript-box">
+          <div class="transcript-header">
+            <div class="status-dot"></div>
+            <h3 class="transcript-title">Transcript</h3>
+          </div>
+          
+          <div id="transcript" class="transcript-content">
+            <p class="transcript-placeholder">Your conversation will appear here...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="action-button" id="clear-btn">
+          <svg class="action-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm6 16H8a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h2v1a1 1 0 0 0 2 0V9h2v12a1 1 0 0 1-1 1z"/>
+          </svg>
+          Clear
+        </button>
+        
+        <button class="action-button" id="save-btn">
+          <svg class="action-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          Save
+        </button>
+        
+        <button class="action-button" id="settings-btn">
+          <svg class="action-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          Settings
+        </button>
+      </div>
+
+      <!-- Voice Visualizer -->
+      <div class="voice-visualizer">
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+      </div>
+    </div>
+
+    <script>
+      // Basic JavaScript for UI interactions
+      const micButton = document.getElementById('mic-button');
+      const statusText = document.getElementById('status-text');
+      const listeningRings = document.getElementById('listening-rings');
+      const transcript = document.getElementById('transcript');
+      const clearBtn = document.getElementById('clear-btn');
+      
+      let isListening = false;
+      
+      micButton.addEventListener('click', () => {
+        isListening = !isListening;
+        
+        if (isListening) {
+          // Start listening state
+          micButton.classList.add('listening');
+          statusText.textContent = 'Listening...';
+          listeningRings.classList.add('active');
+          
+          // Add a sample message to transcript
+          setTimeout(() => {
+            const timestamp = new Date().toLocaleTimeString();
+            transcript.innerHTML = `
+              <div class="transcript-message">
+                <div class="transcript-timestamp">${timestamp}</div>
+                <p class="transcript-text">Hello! How can I help you today?</p>
+              </div>
+            `;
+          }, 1000);
+          
+        } else {
+          // Stop listening state
+          micButton.classList.remove('listening');
+          statusText.textContent = 'Tap to start listening';
+          listeningRings.classList.remove('active');
+        }
+      });
+      
+      // Clear transcript
+      clearBtn.addEventListener('click', () => {
+        transcript.innerHTML = '<p class="transcript-placeholder">Your conversation will appear here...</p>';
+      });
+      
+      // Save and Settings buttons (placeholder functionality)
+      document.getElementById('save-btn').addEventListener('click', () => {
+        alert('Save functionality would be implemented here');
+      });
+      
+      document.getElementById('settings-btn').addEventListener('click', () => {
+        alert('Settings functionality would be implemented here');
+      });
+    </script>
   </body>
 </html>
