@@ -1,9 +1,11 @@
 {
   "name": "voice-asistant",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
+    "build:css": "tailwindcss -i src/input.css -o index.css --minify",
+    "watch:css": "tailwindcss -i src/input.css -o index.css --watch",
+    "start": "npm run build:css && electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,11 +13,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
     "electron": "^36.5.0"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.3.3"
   }
 }

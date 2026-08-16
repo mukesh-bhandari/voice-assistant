@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
+  --animate-pulse-slow: pulse-soft 6s ease-in-out infinite;
+  --animate-pulse-fast: pulse-soft 2s ease-in-out infinite;
+  --animate-ping-slow: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes ping-slow {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+}
+
+.mic-button.listening {
+  background-image: linear-gradient(135deg, #dc2626, #b91c1c);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.mic-button.listening:hover {
+  background-image: linear-gradient(135deg, #ef4444, #dc2626);
+}

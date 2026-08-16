@@ -1,7 +1,7 @@
 from vosk import Model, KaldiRecognizer
 import pyaudio, json, sys
 
-grammar = ["shutdown", "close", "exit", "quit", "firefox", "open", "settings", "codes", "sleep", "pause", "play", "volume", "down", "up", "scroll", "code", "terminal", "explorer", "mute", "un mute"]
+grammar = ["shutdown", "close", "exit", "quit", "firefox", "open", "settings", "codes", "sleep", "pause", "play", "volume", "down", "up", "scroll", "code", "terminal", "explorer", "mute", "unmute"]
 
 model = Model("vosk-model-small-en-us-0.15")  # put your model folder here
 rec = KaldiRecognizer(model, 16000, json.dumps(grammar)) 

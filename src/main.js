@@ -23,7 +23,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile("index.html");
+  mainWindow.loadFile(path.join(__dirname, "renderer", "index.html"));
 }
 
 function handleOpenCommand(text) {
@@ -125,12 +125,16 @@ function closeLastProcess(appName) {
 app.whenReady().then(() => {
   createWindow();
 
-  const py = spawn("python", ["listener.py"]); // change to 'python3' if needed
+  // Prefer project venv Python if present so pip-installed deps are used without activation
+  const venvPython = path.join(__dirname, "..", "venv", "Scripts", "python.exe");
+  const pythonCmd = require("fs").existsSync(venvPython) ? venvPython : "python";
+  const py = spawn(pythonCmd, [path.join(__dirname, "..", "python", "listener.py")]);
 
   py.stdout.on("data", (data) => {
     const text = data.toString().trim().toLowerCase();
     console.log("Python:", text);
     if (!mainWindow || text.length === 0) return;
+    mainWindow.webContents.send("transcript", text);
     if (text === "quit") {
       app.quit();
     } else if (text.startsWith("open ")) {
@@ -143,7 +147,7 @@ app.whenReady().then(() => {
       exec("nircmd.exe changesysvolume -5000");
     } else if (text === "mute") {
       exec("nircmd.exe mutesysvolume 1");
-    } else if (text === "un mute") {
+    } else if (text === "unmute") {
       exec("nircmd.exe mutesysvolume 0");
     }
   });
