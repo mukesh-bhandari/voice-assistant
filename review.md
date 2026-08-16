@@ -134,8 +134,17 @@ Both buttons call `alert()` placeholders.
 - **Files:** `src/renderer/renderer.js:52-57`
 
 ### Issue C — Grammar words without handlers (Feature backlog)
-`shutdown`, `exit`, `sleep`, `pause`, `play`, `scroll`, `codes` are recognized by Vosk but have no dispatcher logic. To be implemented as features (not treated as bugs).
-- **Files:** `python/listener.py:4`, `src/main.js:138-152`
+Some grammar words are recognized by Vosk but have no dispatcher logic yet.
+
+Implemented:
+- `exit` → quits the app (`src/main.js:138`)
+- `play` / `pause` → media play/pause toggle (`sendkeypress 0xB3`)
+- `scroll up` / `scroll down` → Page Up / Page Down (`sendkeypress pageup`/`pagedown`)
+- `codes` → alias for `code` (normalized in open/close handlers)
+
+Still unimplemented (recognized but no-op):
+- `shutdown`, `sleep`
+- **Files:** `python/listener.py:4`, `src/main.js:138-158`
 
 ### Gap D — No tests, no packaging (Low)
 `package.json` `test` script is a stub. No `electron-builder`/`electron-forge` config or distribution output.

@@ -28,7 +28,8 @@ function createWindow() {
 
 function handleOpenCommand(text) {
   const words = text.split(" ");
-  const command = words.find((w) => w !== "open");
+  let command = words.find((w) => w !== "open");
+  if (command === "codes") command = "code";
 
   const openMap = {
     firefox: "start firefox",
@@ -53,7 +54,8 @@ function handleOpenCommand(text) {
 
 function handleCloseCommand(text) {
   const words = text.split(" ");
-  const command = words.find((w) => w !== "close");
+  let command = words.find((w) => w !== "close");
+  if (command === "codes") command = "code";
 
   if (command && processStacks.hasOwnProperty(command)) {
     closeLastProcess(command);
@@ -135,7 +137,7 @@ app.whenReady().then(() => {
     console.log("Python:", text);
     if (!mainWindow || text.length === 0) return;
     mainWindow.webContents.send("transcript", text);
-    if (text === "quit") {
+    if (text === "quit" || text === "exit") {
       app.quit();
     } else if (text.startsWith("open ")) {
       handleOpenCommand(text);
@@ -149,6 +151,12 @@ app.whenReady().then(() => {
       exec("nircmd.exe mutesysvolume 1");
     } else if (text === "unmute") {
       exec("nircmd.exe mutesysvolume 0");
+    } else if (text === "play" || text === "pause") {
+      exec("nircmd.exe sendkeypress 0xB3");
+    } else if (text === "scroll down") {
+      exec("nircmd.exe sendkeypress pagedown");
+    } else if (text === "scroll up") {
+      exec("nircmd.exe sendkeypress pageup");
     }
   });
 
